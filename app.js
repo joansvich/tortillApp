@@ -5,6 +5,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
+const flash = require('connect-flash');
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -23,6 +24,8 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000
   }
 }));
+
+app.use(flash());
 
 // npm install mongoose
 

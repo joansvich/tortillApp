@@ -4,26 +4,24 @@ const bcrypt = require('bcrypt');
 
 const User = require('../models/User');
 
+const { requireAnon, requireUser, requiredFields } = require('../middlewares/auth');
+
 const saltRounds = 10;
 
 /* GET home page. */
-router.get('/signup', (req, res, next) => {
-  if (req.session.currentUser) {
-    res.redirect('/');
-    return;
-  }
-  res.render('auth/signup');
+router.get('/signup', requireAnon, (req, res, next) => {
+  const data = {
+    messages: req.flash('user-exists')
+  };
+  res.render('auth/signup', data);
 });
 
-router.post('/signup', async (req, res, next) => {
+router.post('/signup', requireAnon, requiredFields, async (req, res, next) => {
   const { username, password } = req.body;
-  if (!password || !username) {
-    res.redirect('/auth/signup');
-    return;
-  }
   try {
     const result = await User.findOne({ username });
     if (result) {
+      req.flash('user-exists', 'This username is token');
       res.redirect('/auth/signup');
       return;
     }
@@ -48,25 +46,13 @@ router.post('/signup', async (req, res, next) => {
   }
 });
 
-router.get('/login', (req, res, next) => {
-  if (req.session.currentUser) {
-    res.redirect('/');
-    return;
-  }
+router.get('/login', requireAnon, (req, res, next) => {
   res.render('auth/login');
 });
 
-router.post('/login', async (req, res, next) => {
-  if (req.session.currentUser) {
-    res.redirect('/');
-    return;
-  }
+router.post('/login', requireAnon, requiredFields, async (req, res, next) => {
   // extraer información del body
   const { username, password } = req.body;
-  if (!password || !username) {
-    res.redirect('/auth/login');
-    return;
-  }
   try {
     const user = await User.findOne({ username });
     if (!user) {
@@ -86,11 +72,7 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.post('/logout', (req, res, next) => {
-  if (!req.session.currentUser) {
-    res.redirect('/');
-    return;
-  }
+router.post('/logout', requireUser, (req, res, next) => {
   delete req.session.currentUser;
   res.redirect('/');
 });
