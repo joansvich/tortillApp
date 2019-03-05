@@ -1,7 +1,12 @@
-<h1>{{name}}</h1>
-<p>Special ingredient (if any): {{special}}</p>
-<p>Size: {{size}}</p>
+<h1>{{tortilla.name}}</h1>
+<p>Special ingredient (if any): {{tortilla.special}}</p>
+<p>Size: {{tortilla.size}}</p>
+<p>Creator: {{tortilla.creator.username}}</p>
+
+
+{{#if isCreator}}
 <a href="/tortillas/{{_id}}/edit">Edit Tortilla</a>
 <form action="/tortillas/{{_id}}/delete" method="post">
   <button type="submit">Borrar tortilla</button>
 </form>
+{{/if}}

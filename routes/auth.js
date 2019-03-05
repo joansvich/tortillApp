@@ -11,7 +11,7 @@ const saltRounds = 10;
 /* GET home page. */
 router.get('/signup', requireAnon, (req, res, next) => {
   const data = {
-    messages: req.flash('user-exists')
+    messages: req.flash('validation')
   };
   res.render('auth/signup', data);
 });
@@ -21,7 +21,7 @@ router.post('/signup', requireAnon, requiredFields, async (req, res, next) => {
   try {
     const result = await User.findOne({ username });
     if (result) {
-      req.flash('user-exists', 'This username is token');
+      req.flash('validation', 'This username is token');
       res.redirect('/auth/signup');
       return;
     }
@@ -47,7 +47,10 @@ router.post('/signup', requireAnon, requiredFields, async (req, res, next) => {
 });
 
 router.get('/login', requireAnon, (req, res, next) => {
-  res.render('auth/login');
+  const data = {
+    messages: req.flash('validation')
+  };
+  res.render('auth/login', data);
 });
 
 router.post('/login', requireAnon, requiredFields, async (req, res, next) => {
@@ -56,6 +59,7 @@ router.post('/login', requireAnon, requiredFields, async (req, res, next) => {
   try {
     const user = await User.findOne({ username });
     if (!user) {
+      req.flash('validation', 'Username or Password incorrect');
       res.redirect('/auth/login');
       return;
     }
@@ -65,6 +69,7 @@ router.post('/login', requireAnon, requiredFields, async (req, res, next) => {
       req.session.currentUser = user;
       res.redirect('/');
     } else {
+      req.flash('validation', 'Username or Password incorrect');
       res.redirect('/auth/login');
     }
   } catch (error) {
