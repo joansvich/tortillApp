@@ -6,10 +6,6 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const tortillaSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
   special: {
     type: String
   },
@@ -20,9 +16,25 @@ const tortillaSchema = new Schema({
   creator: {
     type: ObjectId,
     ref: 'User'
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  location: {
+    type: {
+      type: String,
+      default: 'Point'
+    },
+    coordinates: [Number]
+  },
+  imageUrl: {
+    type: String
   }
 });
 
-const Tortilla = mongoose.model('tortilla', tortillaSchema);
+tortillaSchema.index({ location: '2dsphere' });
+
+const Tortilla = mongoose.model('Tortilla', tortillaSchema);
 
 module.exports = Tortilla;

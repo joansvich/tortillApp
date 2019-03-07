@@ -1,9 +1,23 @@
-<h1>Lista de las Tortillas</h1>
+<h1>Las Tortillas</h1>
 
 <ul>
   {{#each tortillas}}
-  <li>
-    <a href="/tortillas/{{this._id}}">{{this.name}}</a>
-  </li>
+    <li> 
+      <a href="/tortillas/{{this._id}}">{{this.name}}</a>
+    </li>
   {{/each}}
 </ul>
+
+<form method="GET" id="search-tortilla" action="/api/tortillas">
+
+  <div class="field" >
+    <label>Buscar por ususario</label>
+    <input type="text" name="username"/>
+  </div>
+
+  <div class="field submit">
+    <button type="submit">Buscar</button>
+  </div>
+</form>
+
+<script src="/javascripts/index.js"></script>

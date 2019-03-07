@@ -3,13 +3,14 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-const indexRouter = require('./routes/index');
-const authRouter = require('./routes/auth');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const flash = require('connect-flash');
 const hbs = require('hbs');
 
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
+const apiRouter = require('./routes/api');
 
 const app = express();
 
@@ -27,10 +28,6 @@ app.use(session({
 }));
 
 app.use(flash());
-
-// npm install mongoose
-
-// --
 
 mongoose.connect('mongodb://localhost/tortillApp', {
   keepAlive: true,
@@ -56,8 +53,8 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+app.use('/api', apiRouter);
 
-// NOTE: requires a views/not-found.ejs template
 app.use((req, res, next) => {
   res.status(404);
   res.render('not-found');

@@ -1,12 +1,25 @@
 <h1>{{tortilla.name}}</h1>
 <p>Special ingredient (if any): {{tortilla.special}}</p>
 <p>Size: {{tortilla.size}}</p>
-<p>Creator: {{tortilla.creator.username}}</p>
+<p>Created by: {{tortilla.creator.username}}</p>
 
+<p class="coordinates">{{tortilla.location.coordinates}}</p>
 
 {{#if isCreator}}
-<a href="/tortillas/{{_id}}/edit">Edit Tortilla</a>
-<form action="/tortillas/{{_id}}/delete" method="post">
+<a href="/tortillas/{{tortilla._id}}/edit">Editar Tortilla</a>
+<form action="/tortillas/{{tortilla._id}}/delete" method="POST">
   <button type="submit">Borrar tortilla</button>
 </form>
-{{/if}}
+{{/if }}
+
+<img src="{{tortilla.imageUrl}}" alt="">
+
+
+<div id="map">
+
+</div>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
+
+<script src="/javascripts/map.js"></script>

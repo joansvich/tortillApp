@@ -7,7 +7,7 @@ a {
   color: #00B7FF;
 }
 
-/* -- forms -- */
+* -- forms -- */
 
 form.is-processing {
 	opacity: 0.5;
@@ -50,4 +50,12 @@ form .field.has-error label {
 }
 form .field.has-error input {
 	border: 1px solid  red;
+}
+
+
+/* map */
+
+#map {
+  height: 500px;
+  width: 500px;
 }
